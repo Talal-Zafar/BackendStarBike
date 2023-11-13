@@ -13,14 +13,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/payments/intent", async (req, res) => {
   console.log(req.body);
+
+  const customer = await stripe.customers.create({ email: req?.body?.email });
+  const params = {
+    amount: req.body.amount,
+    currency: "usd",
+    customer: customer.id,
+    automatic_payment_methods: {
+      enabled: true,
+    },
+  };
   try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: req.body.amount,
-      currency: "usd",
-      automatic_payment_methods: {
-        enabled: true,
-      },
-    });
+    const paymentIntent = await stripe.paymentIntents.create(params);
 
     res.json({ paymentIntent: paymentIntent.client_secret });
   } catch (e) {
