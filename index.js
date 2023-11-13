@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
 const port = 3000;
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const stripe = require("stripe")(
   "sk_test_51O6nYhItZ2KKNkEeqrZdPwNc98CMTUxs9I4F4kp8hE8VqP6IuqEe4mmFYM5y3EsxbVzozetZjkEeYFPcpYvw7W3v00xrRIHuPO"
 );
 
+app.use(cors("*"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
